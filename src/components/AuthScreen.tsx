@@ -16,7 +16,8 @@ export default function AuthScreen({ onAuth, onGuest }: Props) {
   const submit = async () => {
     setError('');
     setLoading(true);
-    const endpoint = mode === 'signup' ? '/api/signup' : '/api/signin';
+    const apiBase = import.meta.env.VITE_API_URL || '';
+    const endpoint = mode === 'signup' ? `${apiBase}/api/signup` : `${apiBase}/api/signin`;
     try {
       const res = await fetch(endpoint, {
         method: 'POST',

@@ -25,6 +25,8 @@ interface AuthState {
   username: string;
 }
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function App() {
   const [auth, setAuth] = useState<AuthState | null>(null);
   const [isGuest, setIsGuest] = useState(false);
@@ -54,7 +56,7 @@ export default function App() {
   // Load score history when auth changes
   useEffect(() => {
     if (!auth) return;
-    fetch('/api/scores', { headers: { Authorization: `Bearer ${auth.token}` } })
+    fetch(`${API_BASE}/api/scores`, { headers: { Authorization: `Bearer ${auth.token}` } })
       .then(r => r.json())
       .then(setHistory)
       .catch(() => {});
@@ -64,13 +66,13 @@ export default function App() {
     if (!auth || scoreSaved) return;
     setScoreSaved(true);
     try {
-      await fetch('/api/scores', {
+      await fetch(`${API_BASE}/api/scores`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${auth.token}` },
         body: JSON.stringify({ score: finalScore }),
       });
       // Refresh history
-      const res = await fetch('/api/scores', { headers: { Authorization: `Bearer ${auth.token}` } });
+      const res = await fetch(`${API_BASE}/api/scores`, { headers: { Authorization: `Bearer ${auth.token}` } });
       setHistory(await res.json());
     } catch {}
   };

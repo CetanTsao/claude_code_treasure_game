@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const { getDb } = require('./_lib/db');
 const { verifyToken } = require('./_lib/auth');
 

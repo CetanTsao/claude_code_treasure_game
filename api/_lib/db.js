@@ -7,7 +7,6 @@ async function getDb() {
   if (!db) {
     await client.connect();
     db = client.db('treasure_game');
-    // Ensure unique index on username
     await db.collection('users').createIndex({ username: 1 }, { unique: true });
   }
   return db;
